@@ -247,6 +247,10 @@ class EfficientNet(Backbone):
             if self.extract_features and i in self.return_features_indices:
                 features.append(x)
 
+            # Early stop forward pass since all features have been collected at this point
+            if i == self.return_features_indices[-1]:
+                break
+
         if self.num_classes > 0:
             x = self._swish(self._bn1(self._conv_head(x)))
             x = x.mean([2, 3])
